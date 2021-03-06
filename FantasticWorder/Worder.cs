@@ -36,27 +36,7 @@
                     possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), first.Skip(1).First(), first.Skip(2).First(), last.Skip(3).First()), true) == 0));
                 }
 
-                foreach (var item in possibles.Where(w => w != null))
-                {
-                    if (item == last)
-                    {
-                        result.Add(last);
-                        return result;
-                    }
-                    else
-                    {
-                        result.Add(item);
-                        var partial = this.Transform(item, last, dictionary, ref result);
-                        if (partial.Last() == last)
-                        {
-                            return partial;
-                        }
-                        else
-                        {
-                            result.Remove(item);
-                        }
-                    }
-                }
+                return Possibilities(first, last, dictionary, possibles, ref result);
             }
             else if (d == 1)
             {
@@ -72,27 +52,7 @@
                     possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), first.Skip(1).First(), first.Skip(2).First(), last.Skip(3).First()), true) == 0));
                 }
 
-                foreach (var item in possibles.Where(w => w != null))
-                {
-                    if (item == last)
-                    {
-                        result.Add(last);
-                        return result;
-                    }
-                    else
-                    {
-                        result.Add(item);
-                        var partial = this.Transform(item, last, dictionary, ref result);
-                        if (partial.Last() == last)
-                        {
-                            return partial;
-                        }
-                        else
-                        {
-                            result.Remove(item);
-                        }
-                    }
-                }
+                return Possibilities(first, last, dictionary, possibles, ref result);
             }
             else if (d == 2)
             {
@@ -103,27 +63,7 @@
                     possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), first.Skip(1).First(), first.Skip(2).First(), last.Skip(3).First()), true) == 0));
                 }
 
-                foreach (var item in possibles.Where(w => w != null))
-                {
-                    if (item == last)
-                    {
-                        result.Add(last);
-                        return result;
-                    }
-                    else
-                    {
-                        result.Add(item);
-                        var partial = this.Transform(item, last, dictionary, ref result);
-                        if (partial.Last() == last)
-                        {
-                            return partial;
-                        }
-                        else
-                        {
-                            result.Remove(item);
-                        }
-                    }
-                }
+                return Possibilities(first, last, dictionary, possibles, ref result);
             }
             else if (d == 3)
             {
@@ -134,7 +74,7 @@
             return result;
         }
 
-        public int Differences(string first, string last)
+        private int Differences(string first, string last)
         {
             for (int i = 0; i < first.Length; i++)
             {
@@ -147,7 +87,7 @@
             return -1;
         }
 
-        public List<string> Possibilities(string first, string last, List<string> dictionary, List<string> possibles, ref List<string> result)
+        private List<string> Possibilities(string first, string last, List<string> dictionary, List<string> possibles, ref List<string> result)
         {
             foreach (var item in possibles.Where(w => w != null))
             {

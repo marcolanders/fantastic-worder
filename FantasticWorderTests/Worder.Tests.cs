@@ -18,7 +18,7 @@
         [TestMethod]
         public void WordateTransformsFromSameToCost()
         {
-            var result = this.Worder.Wordate("same", "cost", new System.Collections.Generic.List<string> { "same", "came", "case", "cast", "cost" });
+            var result = this.Worder.Wordate("same", "cost", new System.Collections.Generic.List<string> { "same", "came", "come", "case", "cast", "cost" });
 
             Assert.AreEqual("same", result.First());
             Assert.AreEqual("came", result.Skip(1).First());
