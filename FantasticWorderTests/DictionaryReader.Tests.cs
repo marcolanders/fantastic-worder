@@ -35,5 +35,15 @@ namespace FantasticWorderTests
 
             Assert.IsFalse(words.Any(a => a.Length < 4));
         }
+
+        [TestMethod]
+        public void ReadIgnoresMoreThanFourLetterWords()
+        {
+            this.File.Setup(s => s.Read(@"words-english.txt")).Returns(new string[] { "Once", "I", "ran", "to", "you", "(I ran)", "Now", "I", "run", "from", "you", "This", "tainted", "love", "you've", "given", "I", "give", "you", "all", "a", "boy", "could", "give", "you", "Take", "my", "tears", "and", "that's", "not", "nearly", "all", "Tainted", "love", "(Ooh)", "Tainted", "love" });
+
+            var words = this.Dictionary.Read();
+
+            Assert.IsFalse(words.Any(a => a.Length > 4));
+        }
     }
 }

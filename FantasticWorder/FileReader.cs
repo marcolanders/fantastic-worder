@@ -1,6 +1,6 @@
 ﻿namespace FantasticWorder
 {
-    public class FileReader
+    public class FileReader : IFileReader
     {
         public string[] Read(string filename)
         {

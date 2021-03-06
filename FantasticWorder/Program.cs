@@ -17,7 +17,9 @@
         {
             container = new Container();
 
+            container.Register<IFileReader, FileReader>();
             container.Register<IDictionaryReader, DictionaryReader>();
+            container.Register<IWorder, Worder>();
 
             container.Verify();
         }
@@ -53,6 +55,8 @@
             Console.WriteLine($"Gotcha! First word is { first }, second word is { second }.");
             read.Wait();
             Console.WriteLine($"Read { read.Result.Count } words into the dictionary.");
+
+            container.GetInstance<IWorder>().Wordate(first, second, read.Result);
 
             //todo: chamar outra classe para receber o dicionário e as duas palavras e calcular o resultado
 
