@@ -2,8 +2,8 @@
 {
     using System.Collections.Generic;
 
-    public interface IDictionaryReader
+    interface IFileWriter
     {
-        List<string> Read(string file);
+        void Write(string file, List<string> words);
     }
 }

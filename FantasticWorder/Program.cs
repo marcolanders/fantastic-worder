@@ -3,6 +3,7 @@
     using SimpleInjector;
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
 
@@ -20,6 +21,7 @@
             container.Register<IFileReader, FileReader>();
             container.Register<IDictionaryReader, DictionaryReader>();
             container.Register<IWorder, Worder>();
+            container.Register<IFileWriter, FileWriter>();
 
             container.Verify();
         }
@@ -29,8 +31,16 @@
         /// </summary>
         static void Main()
         {
-            var read = new Task<List<string>>(() => { return container.GetInstance<IDictionaryReader>().Read(); });
-            read.Start();
+            var file = string.Empty;
+
+            while (!File.Exists(file))
+            {
+                Console.WriteLine("Please input dictionary file name."); //words-english.txt
+                file = Console.ReadLine();
+            }
+
+            var reader = new Task<List<string>>(() => { return container.GetInstance<IDictionaryReader>().Read(file); });
+            reader.Start();
 
             var regex = new Regex(@"^[A-Za-z]{4}$");
 
@@ -44,23 +54,31 @@
                 first = Console.ReadLine();
             }
 
-            string second = string.Empty;
+            string last = string.Empty;
 
-            while (!regex.IsMatch(second))
+            while (!regex.IsMatch(last))
             {
                 Console.WriteLine("Please input a four letter end word.");
-                second = Console.ReadLine();
+                last = Console.ReadLine();
             }
 
-            Console.WriteLine($"Gotcha! First word is { first }, second word is { second }.");
-            read.Wait();
-            Console.WriteLine($"Read { read.Result.Count } words into the dictionary.");
+            Console.WriteLine($"Gotcha! First word is { first }, second word is { last }.");
+            reader.Wait();
+            Console.WriteLine($"Read { reader.Result.Count } words into the dictionary.");
 
-            container.GetInstance<IWorder>().Wordate(first, second, read.Result);
+            var worder = new Task<List<string>>(() => { return container.GetInstance<IWorder>().Wordate(first, last, reader.Result); });
+            worder.Start();
 
-            //todo: chamar outra classe para receber o dicionário e as duas palavras e calcular o resultado
+            Console.WriteLine("Please input answer file name.");
+            file = Console.ReadLine();
 
-            //todo: chamar outra classe para escrever o resultado num ficheiro
+            worder.Wait();
+            foreach (var word in worder.Result)
+            {
+                Console.WriteLine($"{ word }.");
+            }
+
+            container.GetInstance<IFileWriter>().Write(file, worder.Result);
         }
     }
 }

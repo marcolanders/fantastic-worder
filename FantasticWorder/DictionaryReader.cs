@@ -16,13 +16,13 @@
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<string> Read()
+        public List<string> Read(string file)
         {
             var words = new List<string>();
 
             var regex = new Regex(@"^[A-Za-z]{4}$");
 
-            var lines = this.reader.Read(@"words-english.txt");
+            var lines = this.reader.Read(file);
 
             foreach (string line in lines)
             {
