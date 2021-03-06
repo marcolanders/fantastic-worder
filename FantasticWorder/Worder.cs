@@ -20,48 +20,24 @@
             if (d == 0)
             {
                 possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(last.First(), first.Substring(1)), true) == 0));
-
-                if (first.Skip(1).First() != last.Skip(1).First())
-                {
-                    possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), last.Skip(1).First(), first.Substring(2)), true) == 0));
-                }
-
-                if (first.Skip(2).First() != last.Skip(2).First())
-                {
-                    possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), first.Skip(1).First(), last.Skip(2).First(), first.Skip(3).First()), true) == 0));
-                }
-
-                if (first.Skip(3).First() != last.Skip(3).First())
-                {
-                    possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), first.Skip(1).First(), first.Skip(2).First(), last.Skip(3).First()), true) == 0));
-                }
+                possibles.Add(SecondLetterPossibilities(first, last, dictionary));
+                possibles.Add(ThirdLetterPossibilities(first, last, dictionary));
+                possibles.Add(FourthLetterPossibilities(first, last, dictionary));
 
                 return Possibilities(first, last, dictionary, possibles, ref result);
             }
             else if (d == 1)
             {
                 possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), last.Skip(1).First(), first.Substring(2)), true) == 0));
-
-                if (first.Skip(2).First() != last.Skip(2).First())
-                {
-                    possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), first.Skip(1).First(), last.Skip(2).First(), first.Skip(3).First()), true) == 0));
-                }
-
-                if (first.Skip(3).First() != last.Skip(3).First())
-                {
-                    possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), first.Skip(1).First(), first.Skip(2).First(), last.Skip(3).First()), true) == 0));
-                }
+                possibles.Add(ThirdLetterPossibilities(first, last, dictionary));
+                possibles.Add(FourthLetterPossibilities(first, last, dictionary));
 
                 return Possibilities(first, last, dictionary, possibles, ref result);
             }
             else if (d == 2)
             {
                 possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), first.Skip(1).First(), last.Skip(2).First(), first.Skip(3).First()), true) == 0));
-
-                if (first.Skip(3).First() != last.Skip(3).First())
-                {
-                    possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), first.Skip(1).First(), first.Skip(2).First(), last.Skip(3).First()), true) == 0));
-                }
+                possibles.Add(FourthLetterPossibilities(first, last, dictionary));
 
                 return Possibilities(first, last, dictionary, possibles, ref result);
             }
@@ -111,6 +87,36 @@
             }
 
             return result;
+        }
+
+        private string SecondLetterPossibilities(string first, string last, List<string> dictionary)
+        {
+            if (first.Skip(1).First() != last.Skip(1).First())
+            {
+                return dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), last.Skip(1).First(), first.Substring(2)), true) == 0);
+            }
+
+            return null;
+        }
+
+        private string ThirdLetterPossibilities(string first, string last, List<string> dictionary)
+        {
+            if (first.Skip(2).First() != last.Skip(2).First())
+            {
+                return dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), first.Skip(1).First(), last.Skip(2).First(), first.Skip(3).First()), true) == 0);
+            }
+
+            return null;
+        }
+
+        private string FourthLetterPossibilities(string first, string last, List<string> dictionary)
+        {
+            if (first.Skip(3).First() != last.Skip(3).First())
+            {
+                return dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), first.Skip(1).First(), first.Skip(2).First(), last.Skip(3).First()), true) == 0);
+            }
+
+            return null;
         }
     }
 }
