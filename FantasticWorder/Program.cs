@@ -62,7 +62,7 @@
                 last = Console.ReadLine();
             }
 
-            Console.WriteLine($"Gotcha! First word is { first }, second word is { last }.");
+            Console.WriteLine($"Gotcha! First word is { first }, last word is { last }.");
             reader.Wait();
             Console.WriteLine($"Read { reader.Result.Count } words into the dictionary.");
 

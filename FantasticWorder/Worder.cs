@@ -15,55 +15,15 @@
         {
             List<string> possibles = new List<string>();
 
-            int d = Differences(first, last);
+            possibles.Add(FirstLetterPossibilities(first, last, dictionary));
+            possibles.Add(SecondLetterPossibilities(first, last, dictionary));
+            possibles.Add(ThirdLetterPossibilities(first, last, dictionary));
+            possibles.Add(FourthLetterPossibilities(first, last, dictionary));
 
-            if (d == 0)
-            {
-                possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(last.First(), first.Substring(1)), true) == 0));
-                possibles.Add(SecondLetterPossibilities(first, last, dictionary));
-                possibles.Add(ThirdLetterPossibilities(first, last, dictionary));
-                possibles.Add(FourthLetterPossibilities(first, last, dictionary));
-
-                return Possibilities(first, last, dictionary, possibles, ref result);
-            }
-            else if (d == 1)
-            {
-                possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), last.Skip(1).First(), first.Substring(2)), true) == 0));
-                possibles.Add(ThirdLetterPossibilities(first, last, dictionary));
-                possibles.Add(FourthLetterPossibilities(first, last, dictionary));
-
-                return Possibilities(first, last, dictionary, possibles, ref result);
-            }
-            else if (d == 2)
-            {
-                possibles.Add(dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(first.First(), first.Skip(1).First(), last.Skip(2).First(), first.Skip(3).First()), true) == 0));
-                possibles.Add(FourthLetterPossibilities(first, last, dictionary));
-
-                return Possibilities(first, last, dictionary, possibles, ref result);
-            }
-            else if (d == 3)
-            {
-                result.Add(last);
-                return result;
-            }
-
-            return result;
+            return Possibilities(last, dictionary, possibles, ref result);
         }
 
-        private int Differences(string first, string last)
-        {
-            for (int i = 0; i < first.Length; i++)
-            {
-                if (first[i] != last[i])
-                {
-                    return i;
-                }
-            }
-
-            return -1;
-        }
-
-        private List<string> Possibilities(string first, string last, List<string> dictionary, List<string> possibles, ref List<string> result)
+        private List<string> Possibilities(string last, List<string> dictionary, List<string> possibles, ref List<string> result)
         {
             foreach (var item in possibles.Where(w => w != null))
             {
@@ -87,6 +47,16 @@
             }
 
             return result;
+        }
+
+        private string FirstLetterPossibilities(string first, string last, List<string> dictionary)
+        {
+            if (first.First() != last.First())
+            {
+                return dictionary.FirstOrDefault(f => string.Compare(f, string.Concat(last.First(), first.Substring(1)), true) == 0);
+            }
+
+            return null;
         }
 
         private string SecondLetterPossibilities(string first, string last, List<string> dictionary)
